@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人履歷 | My Cute Resume</title>
+    <title>小兔蝴蝶夢想履歷 | My Bunny Resume</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-pink: #ffb7c5;
-            --soft-pink: #ffe4e1;
-            --dark-pink: #ff8fa3;
+            --primary-pink: #ffb7c5; /* 霧粉 */
+            --soft-pink: #ffe4e1; /* 柔粉 */
+            --dark-pink: #ff8fa3; /* 深粉 */
+            --accent-purple: #e2caff; /* 淡淡的薰衣草紫 (蝴蝶用) */
             --text-color: #5a5a5a;
             --bg-color: #fff9f9;
+            --white: #ffffff;
         }
 
         * {
@@ -23,258 +25,568 @@
         body {
             font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(var(--soft-pink) 10%, transparent 10%),
+                radial-gradient(var(--accent-purple) 10%, transparent 10%);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
             color: var(--text-color);
             line-height: 1.6;
-            padding: 40px 20px;
+            padding: 40px 20px 100px 20px; /* 底部留空間給浮動按鈕 */
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         /* 履歷容器 */
         .resume-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             width: 100%;
-            max-width: 800px;
-            border-radius: 30px;
+            max-width: 850px;
+            border-radius: 40px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(255, 183, 197, 0.3);
-            border: 8px solid var(--soft-pink);
+            box-shadow: 0 15px 35px rgba(255, 183, 197, 0.4);
+            border: 10px solid var(--white);
             position: relative;
+            backdrop-filter: blur(5px);
         }
 
-        /* 裝飾小圓點 */
-        .resume-container::before {
-            content: "✨";
+        /* 裝飾兔子 (浮動) */
+        .bunny-decor {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
+            font-size: 3rem;
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
         }
+        .bunny-decor-1 { top: 20px; left: 20px; }
+        .bunny-decor-2 { bottom: 20px; right: 20px; }
 
         /* 左側與頂部裝飾 */
         header {
             background-color: var(--soft-pink);
-            padding: 40px;
+            background-image: linear-gradient(135deg, var(--soft-pink) 0%, var(--primary-pink) 100%);
+            padding: 50px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
+        /* 大頭照 */
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            border: 5px solid white;
-            background-color: #eee;
-            margin-bottom: 15px;
+            border: 6px solid white;
+            margin-bottom: 20px;
             object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
         h1 {
-            color: var(--dark-pink);
-            font-size: 2.2rem;
-            letter-spacing: 2px;
+            color: var(--white);
+            font-size: 2.5rem;
+            letter-spacing: 3px;
             margin-bottom: 5px;
+            text-shadow: 2px 2px 0 var(--dark-pink);
+            display: inline-block;
+            position: relative;
+        }
+
+        /* 姓名旁的蝴蝶 */
+        h1::after {
+            content: "🦋";
+            position: absolute;
+            top: -15px;
+            right: -30px;
+            font-size: 1.2rem;
+            animation: butterfly-fly 3s infinite ease-in-out;
+        }
+
+        @keyframes butterfly-fly {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(5px, -10px) rotate(15deg); }
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--dark-pink);
-            opacity: 0.8;
             font-weight: 500;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
         /* 內容區塊 */
         .content {
             padding: 40px;
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            grid-template-columns: 1fr 1.6fr;
             gap: 40px;
+            position: relative;
+            z-index: 1;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .content {
                 grid-template-columns: 1fr;
             }
         }
 
+        /* 標題樣式 (兔子蝴蝶) */
         h3 {
             color: var(--dark-pink);
-            border-bottom: 2px dashed var(--primary-pink);
-            padding-bottom: 5px;
-            margin-bottom: 15px;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
+            font-size: 1.3rem;
+            position: relative;
+        }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--dark-pink);
+            border-radius: 2px;
         }
 
         h3::before {
-            content: "🌸";
-            margin-right: 8px;
-            font-size: 0.9rem;
+            content: "🐰";
+            margin-right: 10px;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        h3:hover::before {
+            transform: scale(1.3) translateY(-3px);
         }
 
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(255, 183, 197, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 183, 197, 0.25);
         }
 
         /* 聯絡資訊 */
         .contact-info p {
-            font-size: 0.9rem;
-            margin-bottom: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-icon {
+            font-size: 1.1rem;
+            margin-right: 10px;
+            color: var(--dark-pink);
         }
 
         /* 技能標籤 */
         .skill-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
         }
 
         .tag {
             background: var(--soft-pink);
             color: var(--dark-pink);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: default;
+            position: relative;
+        }
+        
+        .tag:hover {
+            background: var(--dark-pink);
+            color: white;
+            transform: scale(1.05);
         }
 
         /* 經歷項目 */
         .exp-item {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .exp-item::before {
+            content: '🦋';
+            position: absolute;
+            left: -5px;
+            top: 5px;
+            font-size: 0.8rem;
+            opacity: 0.6;
         }
 
         .exp-title {
             font-weight: 700;
             color: #333;
+            font-size: 1.05rem;
         }
 
         .exp-date {
-            font-size: 0.8rem;
-            color: #999;
+            font-size: 0.85rem;
+            color: #aaa;
             display: block;
+            margin-bottom: 3px;
         }
 
         .exp-desc {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-top: 5px;
+            color: #666;
         }
 
-        /* 按鈕效果 (互動) */
-        .print-btn {
+        /* --- 創意互動區塊樣式 --- */
+        
+        /* 1. 夢想清單 (核取方塊) */
+        .dream-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .dream-item input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--dark-pink);
+            cursor: pointer;
+        }
+        
+        .dream-item input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #bbb;
+        }
+
+        /* 2. 趣味技能能量條 */
+        .hobby-skill {
+            margin-bottom: 10px;
+        }
+        
+        .hobby-skill-name {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .bar-container {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            border-radius: 5px;
+            width: 0%; /* JS控制 */
+            transition: width 1s ease-out;
+        }
+
+        /* 3. 作品集滾動 */
+        .portfolio-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+        
+        /* 自定義捲軸 */
+        .portfolio-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .portfolio-scroll::-webkit-scrollbar-thumb {
+            background: var(--soft-pink);
+            border-radius: 3px;
+        }
+
+        .portfolio-item {
+            flex: 0 0 120px;
+            height: 80px;
+            background: var(--accent-purple);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            border: 2px solid white;
+        }
+        
+        .portfolio-item:hover {
+            transform: scale(1.05) rotate(-3deg);
+            background: var(--primary-pink);
+        }
+
+        /* 浮動控制按鈕區域 */
+        .floating-controls {
             position: fixed;
             bottom: 30px;
-            right: 30px;
-            background-color: var(--dark-pink);
-            color: white;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        /* 創意按鈕 */
+        .btn-creative {
             border: none;
             padding: 12px 25px;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
             font-family: inherit;
-            transition: transform 0.2s;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .print-btn:hover {
-            transform: scale(1.05);
-            background-color: #ff758f;
+        .btn-creative:hover {
+            transform: translateY(-5px) scale(1.05);
         }
+
+        /* 列印按鈕 (深粉) */
+        .print-btn {
+            background-color: var(--dark-pink);
+            color: white;
+        }
+        .print-btn:hover { background-color: #ff758f; }
+
+        /* 彩蛋按鈕 (薰衣草紫) */
+        .egg-btn {
+            background-color: var(--accent-purple);
+            color: #7a5ba0;
+        }
+        .egg-btn:hover { background-color: #d1b3ff; }
+
+        /* 隱藏元素 */
+        .hidden-egg {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            border: 5px solid var(--accent-purple);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 200;
+            text-align: center;
+        }
+        
+        .hidden-egg.active { display: block; }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 199;
+        }
+        .overlay.active { display: block; }
 
         @media print {
-            .print-btn { display: none; }
+            .floating-controls, .resume-container::before, h3::before, .bar-container, .dream-item input, .portfolio-scroll::-webkit-scrollbar { display: none !important; }
             body { padding: 0; background: white; }
-            .resume-container { border: none; box-shadow: none; }
+            .resume-container { border: none; box-shadow: none; max-width: 100%; }
+            .section { page-break-inside: avoid; border: 1px solid #eee; }
         }
     </style>
 </head>
 <body>
 
+    <div class="overlay" id="overlay" onclick="closeEgg()"></div>
+    <div class="hidden-egg" id="hiddenEgg">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🎉 獲得彩蛋！🦋</div>
+        <p>你發現了隱藏的小兔子！</p>
+        <p>「相信自己，夢想就會像蝴蝶一樣翩翩飛來！」</p>
+        <button class="btn-creative egg-btn" style="margin: 20px auto 0;" onclick="closeEgg()">太棒了！</button>
+    </div>
+
     <div class="resume-container">
+        <div class="bunny-decor bunny-decor-1">🐰</div>
+        <div class="bunny-decor bunny-decor-2">🐰</div>
+
         <header>
-            <img src="https://via.placeholder.com/120" alt="Avatar" class="profile-img">
-            <h1 id="name">王小花</h1>
-            <p class="subtitle">大學生 / 行銷實習生 / 視覺設計愛好者</p>
+            <img src="https://img.icons8.com/illustrations/96/000000/kawaii-rabbit.png" alt="Bunny Avatar" class="profile-img" id="profileImg">
+            <h1 id="name">小兔蝴蝶</h1>
+            <p class="subtitle">大學生 / 夢想行銷人 / 創意生活家</p>
         </header>
 
         <div class="content">
             <div class="side-bar">
-                <div class="section">
-                    <h3>關於我</h3>
-                    <p style="font-size: 0.9rem;">
-                        目前就讀於 OO 大學三年級，熱愛創意發想與社群經營。性格開朗好相處，像向日葵一樣充滿正能量！🌻
-                    </p>
-                </div>
-
                 <div class="section contact-info">
-                    <h3>聯絡方式</h3>
-                    <p>📍 台北市，台灣</p>
-                    <p>📧 hello@email.com</p>
-                    <p>📞 0912-345-678</p>
-                    <p>🔗 IG: @my_cute_life</p>
+                    <h3>聯絡我</h3>
+                    <p><span class="contact-icon">📍</span> 台北市，台灣</p>
+                    <p><span class="contact-icon">📧</span> bunny.hop@email.com</p>
+                    <p><span class="contact-icon">📞</span> 0988-bunny</p>
+                    <p><span class="contact-icon">🔗</span> IG: @bunny_loves_butterflies</p>
                 </div>
 
                 <div class="section">
-                    <h3>專業技能</h3>
+                    <h3>技能勳章</h3>
                     <div class="skill-tags">
-                        <span class="tag">社群經營</span>
-                        <span class="tag">Canva 設計</span>
-                        <span class="tag">影片剪輯</span>
-                        <span class="tag">活動企劃</span>
-                        <span class="tag">溝通協調</span>
+                        <span class="tag">社群經營 ✨</span>
+                        <span class="tag">創意企劃 💡</span>
+                        <span class="tag">視覺設計 🎨</span>
+                        <span class="tag">影片剪輯 🎬</span>
+                        <span class="tag">溝通表達 💬</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>趣味專長</h3>
+                    <div class="hobby-skill">
+                        <div class="hobby-skill-name"><span>🐰 模仿兔子跳</span> <span>100%</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-progress="100%"></div></div>
+                    </div>
+                    <div class="hobby-skill">
+                        <div class="hobby-skill-name"><span>🦋 捕捉創意靈感</span> <span>90%</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-progress="90%"></div></div>
+                    </div>
+                    <div class="hobby-skill">
+                        <div class="hobby-skill-name"><span>☕ 喝珍奶的速度</span> <span>120%</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-progress="100%"></div></div>
                     </div>
                 </div>
             </div>
 
             <div class="main-content">
                 <div class="section">
-                    <h3>學歷背景</h3>
+                    <h3>教育背景</h3>
                     <div class="exp-item">
-                        <span class="exp-title">OO 國家大學 - 數位行銷系</span>
-                        <span class="exp-date">2022.09 - 至今 (預計 2026 畢業)</span>
-                        <p class="exp-desc">在校期間成績優異，曾獲得兩次書卷獎。</p>
+                        <span class="exp-title">OO 國家大學 - 創新行銷與設計系</span>
+                        <span class="exp-date">2023.09 - 至今</span>
+                        <p class="exp-desc">在充滿創意的校園中，學習如何讓點子發光。</p>
                     </div>
                 </div>
 
                 <div class="section">
-                    <h3>實習與活動經歷</h3>
+                    <h3>捕捉的經歷 (實習與活動)</h3>
                     <div class="exp-item">
-                        <span class="exp-title">XX 媒體公司 - 社群行銷實習生</span>
+                        <span class="exp-title">XX 夢想媒體 - 社群實習生</span>
                         <span class="exp-date">2025.07 - 2025.09</span>
-                        <p class="exp-desc">負責 IG 貼文製作，三個月內達成粉絲增長 15%。</p>
+                        <p class="exp-desc">負責 IG 創意貼文製作，像兔子一樣蹦蹦跳跳地嘗試新風格，粉絲增加 20%！</p>
                     </div>
                     <div class="exp-item">
-                        <span class="exp-title">系學會 - 活動組組長</span>
-                        <span class="exp-date">2024.09 - 2025.06</span>
-                        <p class="exp-desc">策劃超過 5 場校園活動，參與人數皆達 100 人以上。</p>
+                        <span class="exp-title">全校創意節 - 宣傳組組長</span>
+                        <span class="exp-date">2024.10 - 2025.05</span>
+                        <p class="exp-desc">帶領團隊發想宣傳企劃，像蝴蝶一樣將創意的花粉傳遞給全校師生。</p>
                     </div>
                 </div>
 
                 <div class="section">
-                    <h3>語言與證照</h3>
-                    <p class="exp-desc">
-                        ✨ 多益 850 分 (金色證書)<br>
-                        ✨ JLPT N2 合格<br>
-                        ✨ 電腦軟體應用丙級
-                    </p>
+                    <h3>夢想清單 (與你一起達成)</h3>
+                    <div class="dream-item">
+                        <input type="checkbox" id="dream1" checked>
+                        <span>在一家充滿活力的公司實習 🐰</span>
+                    </div>
+                    <div class="dream-item">
+                        <input type="checkbox" id="dream2">
+                        <span>讓一個企劃像蝴蝶一樣美麗綻放 🦋</span>
+                    </div>
+                    <div class="dream-item">
+                        <input type="checkbox" id="dream3">
+                        <span>和厲害的團隊一起完成大事 ✨</span>
+                    </div>
+                    <div class="dream-item">
+                        <input type="checkbox" id="dream4">
+                        <span>找到願意讓我嘗試新點子的老闆 🥺</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>我的創意花園 (作品集)</h3>
+                    <div class="portfolio-scroll">
+                        <a href="#" class="portfolio-item">Canva 設計</a>
+                        <a href="#" class="portfolio-item">影片剪輯</a>
+                        <a href="#" class="portfolio-item">企劃書範本</a>
+                        <a href="#" class="portfolio-item">社群貼文</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <button class="print-btn" onclick="window.print()">列印 / 下載 PDF</button>
+    <div class="floating-controls">
+        <button class="btn-creative print-btn" onclick="window.print()">
+            <span>🖨️</span> 列印 / PDF
+        </button>
+        <button class="btn-creative egg-btn" onclick="showEgg()">
+            <span>✨</span> 點亮彩蛋
+        </button>
+    </div>
 
     <script>
         // 你可以加入簡單的互動效果
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("Resume Loaded! 加油，祝你求職順利！🌸");
+            console.log("Bunny Resume Loaded! 祝你像兔子一樣蹦蹦跳跳，夢想成真！🐰🦋");
             
-            // 點擊姓名會變色的驚喜小效果
-            const name = document.getElementById('name');
-            name.addEventListener('click', () => {
-                const colors = ['#ff8fa3', '#ffb7c5', '#ffccd5'];
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                name.style.color = randomColor;
+            // 1. 互動大頭照：點擊會旋轉
+            const profileImg = document.getElementById('profileImg');
+            profileImg.addEventListener('click', () => {
+                profileImg.style.transform = 'rotate(360deg)';
+                setTimeout(() => { profileImg.style.transform = ''; }, 1000);
             });
+
+            // 2. 趣味技能能量條：捲動到該位置時自動載入
+            const bars = document.querySelectorAll('.bar-fill');
+            // 延遲一小段時間後自動載入（或可以加入 scroll 觸發）
+            setTimeout(() => {
+                bars.forEach(bar => {
+                    const progress = bar.getAttribute('data-progress');
+                    bar.style.width = progress;
+                });
+            }, 500);
         });
+
+        // 3. 彩蛋功能
+        function showEgg() {
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('hiddenEgg').classList.add('active');
+        }
+
+        function closeEgg() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('hiddenEgg').classList.remove('active');
+        }
     </script>
 </body>
 </html>
