@@ -1,185 +1,280 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>個人履歷 | 亞洲大學</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人履歷 | My Cute Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --soft-pink: #ffe4e1;
+            --dark-pink: #ff8fa3;
+            --text-color: #5a5a5a;
+            --bg-color: #fff9f9;
+        }
 
-<style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body{
-font-family: Arial, sans-serif;
-margin:0;
-background:#f4f6f9;
-color:#333;
-transition:0.3s;
-}
+        body {
+            font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
 
-header{
-background:#2c3e50;
-color:white;
-text-align:center;
-padding:40px;
-}
+        /* 履歷容器 */
+        .resume-container {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 183, 197, 0.3);
+            border: 8px solid var(--soft-pink);
+            position: relative;
+        }
 
-header h1{
-margin:10px 0;
-}
+        /* 裝飾小圓點 */
+        .resume-container::before {
+            content: "✨";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+        }
 
-.container{
-width:80%;
-margin:auto;
-padding:20px;
-}
+        /* 左側與頂部裝飾 */
+        header {
+            background-color: var(--soft-pink);
+            padding: 40px;
+            text-align: center;
+        }
 
-section{
-background:white;
-margin:20px 0;
-padding:20px;
-border-radius:10px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-}
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            background-color: #eee;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
 
-h2{
-border-left:5px solid #3498db;
-padding-left:10px;
-}
+        h1 {
+            color: var(--dark-pink);
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
 
-.skill{
-margin:10px 0;
-}
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--dark-pink);
+            opacity: 0.8;
+            font-weight: 500;
+        }
 
-.skill-bar{
-background:#ddd;
-height:20px;
-border-radius:20px;
-overflow:hidden;
-}
+        /* 內容區塊 */
+        .content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+        }
 
-.skill-level{
-height:100%;
-background:#3498db;
-width:0%;
-transition:1s;
-}
+        @media (max-width: 600px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
 
-button{
-padding:10px 20px;
-border:none;
-background:#3498db;
-color:white;
-border-radius:5px;
-cursor:pointer;
-}
+        h3 {
+            color: var(--dark-pink);
+            border-bottom: 2px dashed var(--primary-pink);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
 
-.dark{
-background:#1e1e1e;
-color:white;
-}
+        h3::before {
+            content: "🌸";
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
 
-.dark section{
-background:#2c2c2c;
-}
+        .section {
+            margin-bottom: 30px;
+        }
 
-footer{
-text-align:center;
-padding:20px;
-color:#777;
-}
+        /* 聯絡資訊 */
+        .contact-info p {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
 
-</style>
+        /* 技能標籤 */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: var(--soft-pink);
+            color: var(--dark-pink);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* 經歷項目 */
+        .exp-item {
+            margin-bottom: 15px;
+        }
+
+        .exp-title {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .exp-date {
+            font-size: 0.8rem;
+            color: #999;
+            display: block;
+        }
+
+        .exp-desc {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* 按鈕效果 (互動) */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--dark-pink);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+            font-family: inherit;
+            transition: transform 0.2s;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.05);
+            background-color: #ff758f;
+        }
+
+        @media print {
+            .print-btn { display: none; }
+            body { padding: 0; background: white; }
+            .resume-container { border: none; box-shadow: none; }
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-<h1>我的個人履歷</h1>
-<p>亞洲大學學生 | 學號 AU114001001</p>
-<button onclick="toggleDark()">切換深色模式</button>
-</header>
+    <div class="resume-container">
+        <header>
+            <img src="https://via.placeholder.com/120" alt="Avatar" class="profile-img">
+            <h1 id="name">王小花</h1>
+            <p class="subtitle">大學生 / 行銷實習生 / 視覺設計愛好者</p>
+        </header>
 
-<div class="container">
+        <div class="content">
+            <div class="side-bar">
+                <div class="section">
+                    <h3>關於我</h3>
+                    <p style="font-size: 0.9rem;">
+                        目前就讀於 OO 大學三年級，熱愛創意發想與社群經營。性格開朗好相處，像向日葵一樣充滿正能量！🌻
+                    </p>
+                </div>
 
-<section>
-<h2>基本資料</h2>
-<p><b>姓名：</b>（請填寫你的名字）</p>
-<p><b>學校：</b>亞洲大學</p>
-<p><b>學號：</b>AU114001001</p>
-<p><b>科系：</b>（請填寫科系）</p>
-<p><b>Email：</b>example@email.com</p>
-</section>
+                <div class="section contact-info">
+                    <h3>聯絡方式</h3>
+                    <p>📍 台北市，台灣</p>
+                    <p>📧 hello@email.com</p>
+                    <p>📞 0912-345-678</p>
+                    <p>🔗 IG: @my_cute_life</p>
+                </div>
 
-<section>
-<h2>自我介紹</h2>
-<p>
-我目前就讀於亞洲大學，對資訊科技與程式設計有濃厚興趣。
-喜歡學習新的技術並透過專案提升自己的能力。
-</p>
-</section>
+                <div class="section">
+                    <h3>專業技能</h3>
+                    <div class="skill-tags">
+                        <span class="tag">社群經營</span>
+                        <span class="tag">Canva 設計</span>
+                        <span class="tag">影片剪輯</span>
+                        <span class="tag">活動企劃</span>
+                        <span class="tag">溝通協調</span>
+                    </div>
+                </div>
+            </div>
 
-<section>
-<h2>技能</h2>
+            <div class="main-content">
+                <div class="section">
+                    <h3>學歷背景</h3>
+                    <div class="exp-item">
+                        <span class="exp-title">OO 國家大學 - 數位行銷系</span>
+                        <span class="exp-date">2022.09 - 至今 (預計 2026 畢業)</span>
+                        <p class="exp-desc">在校期間成績優異，曾獲得兩次書卷獎。</p>
+                    </div>
+                </div>
 
-<div class="skill">
-HTML
-<div class="skill-bar">
-<div class="skill-level" data-level="80"></div>
-</div>
-</div>
+                <div class="section">
+                    <h3>實習與活動經歷</h3>
+                    <div class="exp-item">
+                        <span class="exp-title">XX 媒體公司 - 社群行銷實習生</span>
+                        <span class="exp-date">2025.07 - 2025.09</span>
+                        <p class="exp-desc">負責 IG 貼文製作，三個月內達成粉絲增長 15%。</p>
+                    </div>
+                    <div class="exp-item">
+                        <span class="exp-title">系學會 - 活動組組長</span>
+                        <span class="exp-date">2024.09 - 2025.06</span>
+                        <p class="exp-desc">策劃超過 5 場校園活動，參與人數皆達 100 人以上。</p>
+                    </div>
+                </div>
 
-<div class="skill">
-CSS
-<div class="skill-bar">
-<div class="skill-level" data-level="70"></div>
-</div>
-</div>
+                <div class="section">
+                    <h3>語言與證照</h3>
+                    <p class="exp-desc">
+                        ✨ 多益 850 分 (金色證書)<br>
+                        ✨ JLPT N2 合格<br>
+                        ✨ 電腦軟體應用丙級
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="skill">
-JavaScript
-<div class="skill-bar">
-<div class="skill-level" data-level="60"></div>
-</div>
-</div>
+    <button class="print-btn" onclick="window.print()">列印 / 下載 PDF</button>
 
-</section>
-
-<section>
-<h2>專案經驗</h2>
-<ul>
-<li>個人網站製作</li>
-<li>網頁前端設計練習</li>
-<li>學校課程專題</li>
-</ul>
-</section>
-
-<section>
-<h2>聯絡方式</h2>
-<p>Email：example@email.com</p>
-<p>GitHub：github.com/yourname</p>
-</section>
-
-</div>
-
-<footer>
-© 2026 個人履歷
-</footer>
-
-<script>
-
-function toggleDark(){
-document.body.classList.toggle("dark")
-}
-
-window.onload=function(){
-let skills=document.querySelectorAll(".skill-level")
-
-skills.forEach(skill=>{
-let level=skill.getAttribute("data-level")
-skill.style.width=level+"%"
-})
-}
-
-</script>
-
+    <script>
+        // 你可以加入簡單的互動效果
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Resume Loaded! 加油，祝你求職順利！🌸");
+            
+            // 點擊姓名會變色的驚喜小效果
+            const name = document.getElementById('name');
+            name.addEventListener('click', () => {
+                const colors = ['#ff8fa3', '#ffb7c5', '#ffccd5'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                name.style.color = randomColor;
+            });
+        });
+    </script>
 </body>
 </html>
