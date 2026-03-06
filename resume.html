@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小兔蝴蝶夢想履歷 | My Bunny Resume</title>
+    <title>語言治療系 | 小兔蝴蝶履歷</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,15 +12,11 @@
             --dark-pink: #ff8fa3;
             --accent-purple: #e2caff;
             --text-color: #5a5a5a;
-            --bg-color: #fff9f9;
+            --bg-color: #fffcfc;
             --white: #ffffff;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
@@ -32,66 +28,57 @@
             background-position: 0 0, 25px 25px;
             color: var(--text-color);
             line-height: 1.6;
-            padding: 40px 10px 120px 10px; /* 增加底部間距避免被按鈕擋住 */
+            padding: 40px 15px 120px 15px;
             display: flex;
             justify-content: center;
         }
 
         .resume-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
             border-radius: 40px;
-            box-shadow: 0 15px 35px rgba(255, 183, 197, 0.4);
-            border: 8px solid var(--white);
+            box-shadow: 0 15px 40px rgba(255, 183, 197, 0.3);
+            border: 6px solid var(--white);
             position: relative;
-            overflow: visible; /* 改為可視，避免內容被裁切 */
         }
 
         header {
-            background-color: var(--soft-pink);
             background-image: linear-gradient(135deg, var(--soft-pink) 0%, var(--primary-pink) 100%);
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
-            border-radius: 32px 32px 0 0;
+            border-radius: 34px 34px 0 0;
+            position: relative;
         }
 
         .profile-img {
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            border: 6px solid white;
+            border: 5px solid white;
             margin-bottom: 15px;
-            object-fit: cover;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
             cursor: pointer;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
-        .profile-img:hover { transform: scale(1.1) rotate(5deg); }
+        .profile-img:hover { transform: scale(1.1) rotate(10deg); }
 
         h1 {
             color: var(--white);
-            font-size: 2.2rem;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            font-size: 2.4rem;
             text-shadow: 2px 2px 0 var(--dark-pink);
             position: relative;
             display: inline-block;
         }
-
         h1::after {
             content: "🦋";
             position: absolute;
-            top: -10px;
-            right: -35px;
-            font-size: 1.5rem;
-            animation: butterfly-fly 3s infinite ease-in-out;
+            top: -10px; right: -40px;
+            animation: butterfly-fly 4s infinite ease-in-out;
         }
 
         @keyframes butterfly-fly {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(10px, -15px); }
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            50% { transform: translate(15px, -20px) rotate(20deg); }
         }
 
         .subtitle {
@@ -99,16 +86,17 @@
             color: var(--dark-pink);
             font-weight: 500;
             background: rgba(255, 255, 255, 0.7);
-            padding: 4px 15px;
-            border-radius: 20px;
+            padding: 5px 20px;
+            border-radius: 25px;
             display: inline-block;
+            margin-top: 10px;
         }
 
         .content {
-            padding: 30px;
+            padding: 35px;
             display: grid;
-            grid-template-columns: 1fr 1.8fr; /* 調整左右比例 */
-            gap: 25px;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 30px;
         }
 
         @media (max-width: 768px) {
@@ -117,216 +105,185 @@
 
         .section {
             margin-bottom: 25px;
+            padding: 20px;
             background: white;
-            padding: 25px;
             border-radius: 25px;
-            box-shadow: 0 5px 15px rgba(255, 183, 197, 0.1);
-            height: fit-content; /* 讓容器根據內容自動調整高度 */
+            box-shadow: 0 4px 15px rgba(255, 183, 197, 0.1);
+            transition: 0.3s;
         }
+        .section:hover { transform: translateY(-3px); }
 
         h3 {
             color: var(--dark-pink);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             border-bottom: 2px dashed var(--soft-pink);
-            padding-bottom: 8px;
+            padding-bottom: 5px;
         }
+        h3::before { content: "🐰"; margin-right: 8px; }
 
-        h3::before { content: "🐰"; margin-right: 10px; }
-
-        .intro-text {
-            font-size: 0.95rem;
-            color: #666;
-            text-align: justify;
-        }
-
-        .contact-info p {
-            font-size: 0.95rem;
-            margin-bottom: 12px;
-            word-break: break-all; /* 防止長網址或Email撐開 */
-        }
-
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        /* 技能合併區塊樣式 */
+        .skill-group { margin-bottom: 15px; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
         .tag {
             background: var(--soft-pink);
             color: var(--dark-pink);
-            padding: 5px 12px;
-            border-radius: 15px;
+            padding: 4px 12px;
+            border-radius: 12px;
             font-size: 0.85rem;
             font-weight: bold;
         }
+        .bar-label { font-size: 0.85rem; display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .bar-bg { width: 100%; height: 10px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-pink), var(--accent-purple)); width: 0; transition: width 1.5s ease; }
 
-        .exp-item { margin-bottom: 20px; padding-left: 10px; border-left: 3px solid var(--soft-pink); }
-        .exp-title { font-weight: 700; color: #333; display: block; }
-        .exp-date { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; display: block; }
-        .exp-desc { font-size: 0.9rem; color: #666; }
+        /* 經歷與學歷項目 */
+        .item { margin-bottom: 18px; position: relative; padding-left: 15px; border-left: 3px solid var(--soft-pink); }
+        .item-title { font-weight: 700; color: #444; font-size: 1rem; }
+        .item-date { font-size: 0.8rem; color: #aaa; display: block; }
+        .item-desc { font-size: 0.9rem; color: #666; margin-top: 4px; }
 
-        .hobby-skill { margin-bottom: 15px; }
-        .bar-container { width: 100%; height: 12px; background: #f0f0f0; border-radius: 6px; margin-top: 5px; }
-        .bar-fill { height: 100%; background: var(--primary-pink); border-radius: 6px; width: 0; transition: width 1s ease; }
-
-        .portfolio-scroll {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-        .portfolio-item {
-            min-width: 120px;
-            height: 70px;
-            background: var(--accent-purple);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #7a5ba0;
-            font-weight: bold;
-            font-size: 0.85rem;
-            transition: 0.3s;
-            border: 2px solid white;
-        }
-        .portfolio-item:hover { transform: translateY(-3px); background: var(--soft-pink); }
+        /* 證照樣式 */
+        .cert-list { list-style: none; }
+        .cert-list li { font-size: 0.9rem; margin-bottom: 8px; display: flex; align-items: center; }
+        .cert-list li::before { content: "✨"; margin-right: 8px; font-size: 0.8rem; }
 
         .floating-controls {
             position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 15px; z-index: 1000;
         }
-
         .btn {
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: 0.3s;
+            border: none; padding: 12px 25px; border-radius: 50px;
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
         }
         .btn-print { background: var(--dark-pink); color: white; }
         .btn-egg { background: var(--accent-purple); color: #7a5ba0; }
-        .btn:hover { transform: scale(1.05); }
 
-        /* 彩蛋彈窗 */
+        /* 彩蛋 */
         .modal {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 30px; border-radius: 30px;
-            z-index: 2000; text-align: center; border: 5px solid var(--soft-pink);
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 30px; border-radius: 30px; z-index: 2000;
+            text-align: center; border: 4px solid var(--soft-pink); width: 280px;
         }
         .modal.active { display: block; }
         .overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); z-index: 1999;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3); z-index: 1999;
         }
         .overlay.active { display: block; }
 
-        @media print {
-            .floating-controls { display: none; }
-            body { padding: 0; }
-            .resume-container { border: none; box-shadow: none; width: 100%; }
-        }
+        @media print { .floating-controls { display: none; } body { padding: 0; } .resume-container { border: none; box-shadow: none; } }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div class="overlay" id="overlay" onclick="toggleModal(false)"></div>
     <div class="modal" id="modal">
-        <h2>🎉 兔子小驚喜 🦋</h2>
-        <p style="margin: 15px 0;">「跳得越高，看到的風景越美！」<br>面試官，這是一封通往夢想的邀請函。</p>
-        <button class="btn btn-egg" onclick="closeModal()">收到！</button>
+        <h2 style="color: var(--dark-pink);">🐰 小兔悄悄話</h2>
+        <p style="margin: 15px 0;">「用溫暖的聲音，<br>治癒每一顆心。」</p>
+        <button class="btn btn-egg" onclick="toggleModal(false)">加油！</button>
     </div>
 
     <div class="resume-container">
         <header>
             <img src="https://img.icons8.com/illustrations/96/000000/kawaii-rabbit.png" alt="Avatar" class="profile-img" id="avatar">
             <h1>小兔蝴蝶</h1><br>
-            <p class="subtitle">大學生 | 創意行銷實習生 | 視覺設計</p>
+            <p class="subtitle">語言治療與聽力學系 | 專業溝通引導者</p>
         </header>
 
         <div class="content">
             <div class="side">
                 <div class="section">
-                    <h3>我的簡介</h3>
-                    <p class="intro-text">
-                        你好！我是晴。我是一個充滿好奇心的大一學生，專長於數位行銷與視覺傳達。像蝴蝶追求花朵一樣，我熱衷於挖掘數據背後的感人故事；像兔子一樣，我行動敏捷且隨時準備好面對新挑戰！🌻
+                    <h3>關於我</h3>
+                    <p style="font-size: 0.9rem; text-align: justify;">
+                        你好！我是就讀語言治療系的大三學生。我熱衷於透過專業知識幫助他人克服溝通障礙。像蝴蝶破繭而出一般，我希望能引導個案找回說話的自信！🦋
                     </p>
                 </div>
 
                 <div class="section">
-                    <h3>聯絡方式</h3>
-                    <div class="contact-info">
-                        <p>📍 台北市，台灣</p>
-                        <p>📧 bunny.fly@email.com</p>
-                        <p>📞 0912-345-678</p>
-                        <p>🔗 portfolio.me/bunny</p>
+                    <h3>學歷背景</h3>
+                    <div class="item">
+                        <span class="item-title">OO 醫學大學</span>
+                        <span class="item-date">語言治療與聽力學系 | 2022 - 至今</span>
+                    </div>
+                    <div class="item">
+                        <span class="item-title">OO 高級中學</span>
+                        <span class="item-date">2019 - 2022 畢業</span>
                     </div>
                 </div>
 
                 <div class="section">
-                    <h3>核心技能</h3>
+                    <h3>專業技能與實力</h3>
                     <div class="skill-tags">
-                        <span class="tag">社群經營</span>
-                        <span class="tag">Canva 設計</span>
-                        <span class="tag">Python 基礎</span>
-                        <span class="tag">活動企劃</span>
-                        <span class="tag">團隊協作</span>
+                        <span class="tag">構音評估</span>
+                        <span class="tag">語言發展</span>
+                        <span class="tag">嗓音復健</span>
+                        <span class="tag">早期療育</span>
                     </div>
+                    <div class="skill-group">
+                        <div class="bar-label"><span>溝通耐心 🐰</span><span>95%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" data-w="95%"></div></div>
+                    </div>
+                    <div class="skill-group">
+                        <div class="bar-label"><span>個案觀察 🦋</span><span>85%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" data-w="85%"></div></div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>語言與證照</h3>
+                    <ul class="cert-list">
+                        <li>多益英語測驗 800 分</li>
+                        <li>CPR+AED 證照</li>
+                        <li>手語基礎溝通證書</li>
+                        <li>普通重型機車駕照</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="main">
                 <div class="section">
-                    <h3>捕捉的經歷</h3>
-                    <div class="exp-item">
-                        <span class="exp-title">OO 數位科技 - 行銷實習生</span>
-                        <span class="exp-date">2025.07 - 2025.12</span>
-                        <p class="exp-desc">操作品牌 IG 帳號，於三個月內達成互動率提升 25% 的佳績，並策劃 2 場線上活動。</p>
+                    <h3>實習與服務經驗</h3>
+                    <div class="item">
+                        <span class="item-title">OO 醫院 復健科部 - 見習生</span>
+                        <span class="item-date">2025.01 - 2025.02</span>
+                        <p class="item-desc">協助語言治療師進行早療評估準備，並觀察 20+ 位各類型障礙個案的治療過程。</p>
                     </div>
-                    <div class="exp-item">
-                        <span class="exp-title">大學學生會 - 文宣部長</span>
-                        <span class="exp-date">2024.09 - 2025.06</span>
-                        <p class="exp-desc">負責全校性活動的視覺設計與實體海報製作，推動電子化宣傳節省 30% 印刷成本。</p>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h3>趣味專長能量</h3>
-                    <div class="hobby-skill">
-                        <p style="font-size: 0.9rem;">🐰 創意發想速度</p>
-                        <div class="bar-container"><div class="bar-fill" data-width="95%"></div></div>
-                    </div>
-                    <div class="hobby-skill">
-                        <p style="font-size: 0.9rem;">🦋 跨領域適應力</p>
-                        <div class="bar-container"><div class="bar-fill" data-width="85%"></div></div>
+                    <div class="item">
+                        <span class="item-title">偏鄉早療服務社 - 副社長</span>
+                        <span class="item-date">2023.09 - 2024.06</span>
+                        <p class="item-desc">規劃並執行 3 場偏鄉兒童語言發展篩檢活動，總計服務超過 50 名幼兒。</p>
                     </div>
                 </div>
 
                 <div class="section">
-                    <h3>我的花園作品集</h3>
-                    <div class="portfolio-scroll">
-                        <a href="#" class="portfolio-item">視覺海報</a>
-                        <a href="#" class="portfolio-item">企劃提案</a>
-                        <a href="#" class="portfolio-item">插畫作品</a>
-                        <a href="#" class="portfolio-item">影片剪輯</a>
+                    <h3>聯絡小兔</h3>
+                    <div style="font-size: 0.95rem;">
+                        <p>📍 台北市，台灣</p>
+                        <p>📧 slp.bunny@email.com</p>
+                        <p>📞 0987-654-321</p>
+                        <p>🔗 LinkedIn: /in/slpbunny</p>
                     </div>
+                </div>
+
+                <div class="section">
+                    <h3>夢想進度條</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 8px;">🐰 考取語言治療師國考 (進行中)</p>
+                    <div class="bar-bg"><div class="bar-fill" data-w="60%"></div></div>
+                    <p style="font-size: 0.9rem; margin: 12px 0 8px;">🦋 成為溫暖的早療老師</p>
+                    <div class="bar-bg"><div class="bar-fill" data-w="40%"></div></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="floating-controls">
-        <button class="btn btn-print" onclick="window.print()">🖨️ 列印 PDF</button>
-        <button class="btn btn-egg" onclick="openModal()">✨ 點我</button>
+        <button class="btn btn-print" onclick="window.print()">🖨️ 下載 PDF</button>
+        <button class="btn btn-egg" onclick="toggleModal(true)">✨ 彩蛋</button>
     </div>
 
     <script>
@@ -334,11 +291,11 @@
             // 動畫填滿能量條
             setTimeout(() => {
                 document.querySelectorAll('.bar-fill').forEach(bar => {
-                    bar.style.width = bar.getAttribute('data-width');
+                    bar.style.width = bar.getAttribute('data-w');
                 });
-            }, 500);
+            }, 600);
 
-            // 大頭照驚喜
+            // 頭像旋轉
             const avatar = document.getElementById('avatar');
             avatar.onclick = () => {
                 avatar.style.transform = 'rotate(360deg)';
@@ -346,14 +303,10 @@
             };
         });
 
-        function openModal() {
-            document.getElementById('modal').classList.add('active');
-            document.getElementById('overlay').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
+        function toggleModal(show) {
+            const display = show ? 'block' : 'none';
+            document.getElementById('modal').style.display = display;
+            document.getElementById('overlay').style.display = display;
         }
     </script>
 </body>
