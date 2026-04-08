@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>語療系 | Coquette Bento 履歷</title>
+<title>尤鈺晴 | Coquette Bento 履歷</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 @font-face {
@@ -17,7 +19,7 @@
     --shabby-pink: #fbe4e6;
     --accent-pink: #e8a6ad;
     --soft-rose: #f3c6cc;
-    --lace-white: #fff7f8;
+    --lace-white: rgba(255, 247, 248, 0.45);
     --shabby-green: #788b78;
     --accent-green: #7c9c7c;
     --dark-text: #3a2f2f;
@@ -30,15 +32,127 @@ body {
     font-family: 'Iansui', 'Noto Serif TC', serif;
     background-color: #fffafa;
     background-image: 
-        radial-gradient(#f3c6cc 0.7px, transparent 0.7px),
-        radial-gradient(#e8f0e8 0.7px, transparent 0.7px);
+        radial-gradient(var(--soft-rose) 0.8px, transparent 0.8px),
+        radial-gradient(#e8f0e8 0.8px, transparent 0.8px);
     background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
     color: var(--dark-text);
-    padding: 40px 15px;
+    padding: 60px 15px 40px;
     display: flex;
     justify-content: center;
+    overflow-x: hidden;
 }
 
+/* ================= 歡迎介面 ================= */
+#welcome-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(135deg, #fff7f8, #fbe4e6);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+#welcome-screen h1 {
+    font-size: 3rem;
+    color: var(--title-brown);
+    animation: float 3s ease-in-out infinite;
+}
+
+#welcome-screen p {
+    margin-top: 15px;
+    color: var(--accent-green);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* ================= 浮動按鈕與音樂播放器 ================= */
+.floating-tools {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.tool-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--soft-rose);
+    box-shadow: 0 4px 10px rgba(232, 166, 173, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.tool-btn:hover {
+    transform: scale(1.1);
+    background: var(--lace-white);
+}
+
+.left-tools {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+#music-player {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 250px;
+    background: rgba(255, 247, 248, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--soft-rose);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 25px rgba(232, 166, 173, 0.2);
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#music-player.show { display: flex; }
+
+.playlist-item {
+    font-size: 0.9rem;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.5);
+    transition: background 0.2s;
+}
+
+.playlist-item:hover, .playlist-item.active {
+    background: var(--shabby-pink);
+    color: var(--title-brown);
+    font-weight: bold;
+}
+
+/* ================= 履歷主體 ================= */
 .container {
     max-width: 1050px;
     width: 100%;
@@ -48,9 +162,11 @@ body {
     width: 100%;
     height: 200px;
     background: 
-        linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+        linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.5)),
         url('IMG_9083.jpg') center/cover;
+    background-color: var(--soft-rose);
     border-radius: 20px 20px 0 0;
+    box-shadow: 0 4px 15px rgba(232,166,173,0.2);
 }
 
 .bento-grid {
@@ -62,149 +178,225 @@ body {
 
 .bento-item {
     background: var(--lace-white);
+    backdrop-filter: blur(12px);
     border-radius: 15px;
     padding: 25px;
-    box-shadow: 0 6px 20px rgba(232,166,173,0.12);
-    border: 1px solid #f3dede;
+    box-shadow: 0 8px 32px 0 rgba(232, 166, 173, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(243, 222, 222, 0.5);
     position: relative;
+    resize: both;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    container-type: inline-size;
 }
 
 .bento-item::after {
     content: "";
     position: absolute;
-    top: 5px; left: 5px; right: 5px; bottom: 5px;
-    border: 1px dashed #f3c6cc;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px dashed rgba(243, 198, 204, 0.6);
     border-radius: 12px;
+    pointer-events: none;
 }
 
 .side-group, .main-group {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    min-height: 100px;
 }
 
-.header-item {
-    grid-column: span 2;
+.sortable-ghost { opacity: 0.4; background: #fff; }
+.sortable-drag { cursor: grabbing !important; }
+
+/* ================= 標題點擊與內容收折 ================= */
+.item-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 30px;
-    background: linear-gradient(135deg, #fff7f8, #fbe4e6);
+    border-bottom: 2px solid rgba(120, 139, 120, 0.3);
+    padding-bottom: 8px;
+    cursor: pointer; /* 改為可點擊展開 */
+    user-select: none;
 }
 
-.profile-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 12px;
-    object-fit: cover;
-}
+.item-header:hover h3 { color: var(--accent-pink); }
 
-h1 {
-    font-size: 2.8rem;
-    color: var(--title-brown);
-}
-
-.subtitle {
+.drag-handle {
+    cursor: grab;
     font-size: 1.2rem;
-    color: var(--accent-green);
-    font-weight: 700;
+    opacity: 0.5;
+    transition: opacity 0.2s;
 }
+
+.drag-handle:hover { opacity: 1; }
+.drag-handle:active { cursor: grabbing; }
 
 h3 {
     font-size: 1.25rem;
     color: var(--title-brown);
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--shabby-green);
-    padding-bottom: 5px;
+    transition: color 0.3s;
 }
 
-h3::before {
-    content: "🎀";
-    margin-right: 8px;
+h3::before { content: "🎀"; margin-right: 8px; }
+
+/* 內容隱藏與漸顯邏輯 */
+.bento-content-wrapper {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease, margin-top 0.5s ease;
 }
+
+.bento-content-wrapper.expanded {
+    max-height: 1000px; /* 給一個足夠大的值讓它展開 */
+    opacity: 1;
+    margin-top: 15px;
+    overflow-y: auto;
+}
+
+.bento-content-wrapper::-webkit-scrollbar { width: 6px; }
+.bento-content-wrapper::-webkit-scrollbar-thumb { background: var(--soft-rose); border-radius: 10px; }
+
+/* ================= 內部元素樣式 ================= */
+.header-item {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    background: linear-gradient(135deg, rgba(255,247,248,0.6), rgba(251,228,230,0.6));
+    resize: none;
+}
+
+.header-item .bento-content-wrapper {
+    max-height: none; opacity: 1; overflow: visible; display: flex; align-items: center; gap: 30px; margin-top:0;
+}
+
+.profile-img { width: 120px; height: 120px; border-radius: 12px; object-fit: cover; }
+h1 { font-size: 2.8rem; color: var(--title-brown); }
+.subtitle { font-size: 1.2rem; color: var(--accent-green); font-weight: 700; margin-bottom: 5px;}
 
 .info-list { list-style: none; }
-.info-list li { margin-bottom: 10px; font-weight: 600; }
-.info-label { color: var(--accent-green); font-size: 0.8rem; display: block; }
+.info-list li { margin-bottom: 12px; font-weight: 600; display: flex; align-items: center;}
+.info-label { color: var(--accent-green); font-size: 0.85rem; width: 65px; display: inline-block; }
 
 .skill-item { margin-bottom: 15px; }
-.skill-name { display: flex; justify-content: space-between; font-weight: 700; }
-.bar-bg { height: 8px; background: #eee; border-radius: 10px; }
-.bar-fill { height: 100%; background: linear-gradient(90deg, #f8c8dc, #cde7d8); border-radius: 10px; }
+.skill-name { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 5px;}
+.bar-bg { height: 10px; background: rgba(238, 238, 238, 0.5); border-radius: 10px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+.bar-fill { height: 100%; background: linear-gradient(90deg, #f8c8dc, #cde7d8); border-radius: 10px; width: 0; transition: width 1s ease-out; }
 
-.tag-group { display: flex; flex-wrap: wrap; gap: 8px; }
-.tag {
-    background: #ffeef1;
-    color: #b76e79;
-    padding: 4px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    border: 1px solid #f5c2c7;
-}
+.tag-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;}
+.tag { background: rgba(255, 238, 241, 0.8); color: #b76e79; padding: 5px 14px; border-radius: 20px; font-size: 0.85rem; border: 1px solid rgba(245, 194, 199, 0.6); }
 
-.exp-item {
-    margin-bottom: 15px;
-    border-left: 3px solid var(--accent-green);
-    padding-left: 10px;
-}
+.timeline { border-left: 2px dashed var(--accent-green); margin-left: 10px; padding-left: 20px; margin-top: 10px; }
+.timeline-item { position: relative; margin-bottom: 20px; }
+.timeline-item::before { content: '🦋'; position: absolute; left: -32px; top: -2px; font-size: 1rem; }
+.timeline-date { font-size: 0.8rem; color: var(--shabby-green); font-weight: bold; }
+.timeline-title { font-weight: 900; color: var(--title-brown); margin-bottom: 4px; }
+.timeline-desc { font-size: 0.9rem; color: #555; line-height: 1.5; }
 
-@media (max-width: 850px) {
-    .bento-grid { grid-template-columns: 1fr; }
-    .header-item { flex-direction: column; text-align: center; }
-}
+/* PDF 輸出時的隱藏設定 */
+.html2pdf__container { padding: 0 !important; }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div id="welcome-screen">
+    <h1>Welcome to My World 🦋</h1>
+    <p>Click anywhere to enter</p>
+</div>
+
+<div class="left-tools">
+    <div class="tool-btn" id="export-btn" title="匯出完整履歷 PDF">📄</div>
+</div>
+
+<div class="floating-tools">
+    <div class="tool-btn" id="music-toggle-btn" title="Music Player">🎵</div>
+    <div id="music-player">
+        <div style="font-weight: bold; color: var(--title-brown); border-bottom: 1px dashed var(--accent-pink); padding-bottom: 5px;">BGM Playlist</div>
+        <div class="playlist-item active" data-src="playlist/Aylex - Creamy (freetouse.com).mp3">1. Creamy</div>
+        <div class="playlist-item" data-src="playlist/Hazelwood - Reflection (freetouse.com).mp3">2. Reflection</div>
+        <div class="playlist-item" data-src="playlist/Lukrembo - Teapot (freetouse.com).mp3">3. Teapot</div>
+    </div>
+</div>
+
+<audio id="bg-audio" loop></audio>
+
+<div class="container" id="resume-container">
 <div class="banner"></div>
 
 <div class="bento-grid">
 
 <div class="bento-item header-item">
-    <img src="fxn 2026-01-17 102436.854.jpg" class="profile-img">
-    <div>
-        <h1>尤鈺晴</h1>
-        <p class="subtitle">聽力暨語言治療學系 | </p>
-        <p style="font-size:0.9rem; color:#b76e79;">“Every voice deserves to be heard, and I help make it possible ♡”</p>
+    <div class="bento-content-wrapper expanded">
+        <img src="fxn 2026-01-17 102436.854.jpg" alt="Profile" class="profile-img" onerror="this.src='https://via.placeholder.com/120/ffeef1/e8a6ad?text=Ching'">
+        <div>
+            <h1>尤鈺晴</h1>
+            <p class="subtitle">聽力暨語言治療學系</p>
+            <p style="font-size:0.95rem; color:#b76e79; font-style: italic;">“Every voice deserves to be heard, and I help make it possible ♡”</p>
+        </div>
     </div>
 </div>
 
 <div class="side-group">
 
 <div class="bento-item">
-<h3>聯絡資訊</h3>
-<ul class="info-list">
-<li><span class="info-label">Email</span>📧 slp.ching@email.com</li>
-<li><span class="info-label">Location</span>📍台中市</li>
-<li><span class="info-label">Phone</span>📞 0987-654-321</li>
-</ul>
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>聯絡資訊</h3>
+        <span class="drag-handle" title="拖曳排序">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <ul class="info-list">
+        <li><span class="info-label">Email</span>📧 slp.ching@email.com</li>
+        <li><span class="info-label">Location</span>📍 台中市</li>
+        <li><span class="info-label">Phone</span>📞 0987-654-321</li>
+        </ul>
+    </div>
 </div>
 
 <div class="bento-item">
-<h3>基本信息</h3>
-<ul class="info-list">
-<li><span class="info-label">學號</span>114018058</li>
-<li><span class="info-label">年齡</span>19</li>
-<li><span class="info-label">MBTI</span>INFP</li>
-<li><span class="info-label">生日</span>2007.04.01</li>
-<li><span class="info-label">興趣</span>鉤織・舞蹈・K-pop</li>
-</ul>
-</div>
-
-<div class="bento-item" style="background:#fff7f8;">
-<h3>學歷背景</h3>
-
-<div class="exp-item"></div>
-<p><b>亞洲大學</b></p>
-<p>聽力暨語言治療學系</p>
-<p>2025 - now</p>
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>基本信息</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <ul class="info-list">
+        <li><span class="info-label">學號</span>114018058</li>
+        <li><span class="info-label">MBTI</span>INFP</li>
+        <li><span class="info-label">生日</span>2007.04.01</li>
+        <li><span class="info-label">興趣</span>鉤織・舞蹈・寫作</li>
+        </ul>
+    </div>
 </div>
 
 <div class="bento-item">
-<h3>語言證照</h3>
-<p>✨ TOEIC 900</p>
-<p>✨ JLPT N5</p>
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>學歷背景</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2025.09 - Present</div>
+                <div class="timeline-title">亞洲大學</div>
+                <div class="timeline-desc">聽力暨語言治療學系 在學中</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bento-item">
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>語言與證照</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <p style="margin-bottom:8px;">✨ TOEIC 900</p>
+        <p>✨ JLPT N5</p>
+    </div>
 </div>
 
 </div>
@@ -212,49 +404,214 @@ h3::before {
 <div class="main-group">
 
 <div class="bento-item">
-<h3>關於我</h3>
-<p style="line-height:1.8;">
-你好！我是就讀聽力暨語言治療系的大一學生。
-我熱衷於透過專業知識幫助他人克服溝通障礙。
-像蝴蝶破繭而出一般，我希望能引導個案找回說話的自信！
-</p>
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>關於我</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper">
+        <p class="typing-text" style="line-height:1.8; letter-spacing: 0.5px;" data-text="你好！我是就讀聽力暨語言治療系的大一學生。我熱衷於透過專業知識幫助他人克服溝通障礙。像蝴蝶破繭而出一般，我希望能引導個案找回說話的自信！平時也喜歡關注 SDGs 永續發展與性別平權議題，並透過文字創作與舞台劇傳遞理念。"></p>
+    </div>
 </div>
 
 <div class="bento-item">
-<h3>專業技能與實力</h3>
-
-<div class="skill-item">
-<div class="skill-name"><span>溝通耐心 🐰</span><span>95%</span></div>
-<div class="bar-bg"><div class="bar-fill" style="width:95%"></div></div>
-</div>
-
-<div class="skill-item">
-<div class="skill-name"><span>個案分析 🦋</span><span>85%</span></div>
-<div class="bar-bg"><div class="bar-fill" style="width:85%"></div></div>
-</div>
-
-<div class="tag-group">
-<span class="tag">溫柔引導</span>
-<span class="tag">情緒理解</span>
-<span class="tag">早療</span>
-<span class="tag">構音評估</span>
-</div>
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>專業技能與實力</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <div class="skill-item">
+            <div class="skill-name"><span>溝通耐心 🐰</span><span>95%</span></div>
+            <div class="bar-bg"><div class="bar-fill" data-width="95%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-name"><span>個案分析 🦋</span><span>85%</span></div>
+            <div class="bar-bg"><div class="bar-fill" data-width="85%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-name"><span>劇本編排與企劃 ✍🏻</span><span>90%</span></div>
+            <div class="bar-bg"><div class="bar-fill" data-width="90%"></div></div>
+        </div>
+        <div class="tag-group">
+            <span class="tag">溫柔引導</span><span class="tag">情緒理解</span><span class="tag">早療</span><span class="tag">構音評估</span><span class="tag">跨域合作</span>
+        </div>
+    </div>
 </div>
 
 <div class="bento-item">
-<h3>實習與服務經驗</h3>
-
-<div class="exp-item">
-<b>累積中...</b>
-<p>-----</p>
+    <div class="item-header" onclick="toggleBento(this)">
+        <h3>實習與專案經驗</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2026.03</div>
+                <div class="timeline-title">韋尼克氏失語症衛教舞台劇</div>
+                <div class="timeline-desc">擔任劇本編撰，結合大學生活與音樂元素，生動呈現中風引發語言障礙的醫學知識。</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2026.03</div>
+                <div class="timeline-title">SDGs 永續發展專案講者</div>
+                <div class="timeline-desc">針對 SDG 5 (性別平權)，探討媒體文化中的性別刻板印象。</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2026.01</div>
+                <div class="timeline-title">跨世代青銀共融活動</div>
+                <div class="timeline-desc">擔任副總召，策劃結合長者與兒童的互動式實境破冰遊戲。</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </div>
 
 </div>
+</div>
 
-</div>
-</div>
+<script>
+// ================= 1. 歡迎介面與音樂自動播放 =================
+const welcomeScreen = document.getElementById('welcome-screen');
+const audio = document.getElementById('bg-audio');
+const playlistItems = document.querySelectorAll('.playlist-item');
+
+// 設定初始音樂
+if(playlistItems.length > 0){
+    audio.src = playlistItems[0].getAttribute('data-src');
+}
+
+welcomeScreen.addEventListener('click', () => {
+    welcomeScreen.style.opacity = '0';
+    setTimeout(() => {
+        welcomeScreen.style.display = 'none';
+    }, 800);
+    
+    // 使用者互動後，自動播放音樂
+    audio.play().catch(e => console.log("Audio autoplay blocked or src invalid."));
+});
+
+// ================= 2. 音樂播放器控制 =================
+const musicToggleBtn = document.getElementById('music-toggle-btn');
+const musicPlayer = document.getElementById('music-player');
+
+musicToggleBtn.addEventListener('click', () => {
+    musicPlayer.classList.toggle('show');
+});
+
+playlistItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // 更新 active 樣式
+        playlistItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        // 切換音樂並播放
+        audio.src = item.getAttribute('data-src');
+        audio.play();
+    });
+});
+
+// ================= 3. 拖曳功能 =================
+const sideGroup = document.querySelector('.side-group');
+const mainGroup = document.querySelector('.main-group');
+const sortableOptions = {
+    group: 'bento',
+    animation: 200,
+    handle: '.drag-handle', // 只有抓著 ⋮⋮ 才能拖曳，避免與點擊標題衝突
+    ghostClass: 'sortable-ghost',
+    dragClass: 'sortable-drag'
+};
+new Sortable(sideGroup, sortableOptions);
+new Sortable(mainGroup, sortableOptions);
+
+// ================= 4. 收折展開與打字機/進度條動畫 =================
+function toggleBento(headerElement) {
+    const wrapper = headerElement.nextElementSibling;
+    const isExpanded = wrapper.classList.contains('expanded');
+    
+    // 如果已經展開，則收起
+    if (isExpanded) {
+        wrapper.classList.remove('expanded');
+        // 重置文字與進度條，為下次展開做準備
+        const typingEl = wrapper.querySelector('.typing-text');
+        if (typingEl) typingEl.innerHTML = '';
+        const bars = wrapper.querySelectorAll('.bar-fill');
+        bars.forEach(bar => bar.style.width = '0');
+        return;
+    }
+    
+    // 展開內容
+    wrapper.classList.add('expanded');
+    
+    // 檢查是否有需要打字機效果的純文字
+    const typingEl = wrapper.querySelector('.typing-text');
+    if (typingEl) {
+        const textToType = typingEl.getAttribute('data-text');
+        typingEl.innerHTML = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < textToType.length) {
+                typingEl.innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, 30); // 打字速度
+            }
+        }
+        setTimeout(typeWriter, 300); // 稍微延遲等展開動畫跑完
+    }
+    
+    // 檢查是否有進度條需要跑動畫 (漸顯的一部分)
+    const bars = wrapper.querySelectorAll('.bar-fill');
+    if (bars.length > 0) {
+        setTimeout(() => {
+            bars.forEach(bar => {
+                bar.style.width = bar.getAttribute('data-width');
+            });
+        }, 200);
+    }
+}
+
+// ================= 5. PDF 匯出功能 =================
+const exportBtn = document.getElementById('export-btn');
+
+exportBtn.addEventListener('click', () => {
+    // 1. 強制展開所有隱藏的 Bento Items 確保內容被印出
+    const allWrappers = document.querySelectorAll('.bento-content-wrapper');
+    allWrappers.forEach(wrapper => {
+        wrapper.classList.add('expanded');
+        
+        // 如果有打字機文字，直接顯示全部
+        const typingEl = wrapper.querySelector('.typing-text');
+        if (typingEl) {
+            typingEl.innerHTML = typingEl.getAttribute('data-text');
+        }
+        // 將進度條填滿
+        const bars = wrapper.querySelectorAll('.bar-fill');
+        bars.forEach(bar => bar.style.width = bar.getAttribute('data-width'));
+    });
+
+    // 2. 隱藏不必要的按鈕 (避免印到 PDF 裡)
+    document.querySelector('.floating-tools').style.display = 'none';
+    document.querySelector('.left-tools').style.display = 'none';
+    const dragHandles = document.querySelectorAll('.drag-handle');
+    dragHandles.forEach(h => h.style.display = 'none');
+
+    // 3. 設定 PDF 選項
+    const element = document.getElementById('resume-container');
+    const opt = {
+        margin:       0.3,
+        filename:     '尤鈺晴_履歷表.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, windowWidth: 1200 }, // 鎖定視窗寬度避免響應式跑版
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    // 4. 產生 PDF
+    html2pdf().set(opt).from(element).save().then(() => {
+        // 5. 匯出完成後，恢復介面元素
+        document.querySelector('.floating-tools').style.display = 'flex';
+        document.querySelector('.left-tools').style.display = 'block';
+        dragHandles.forEach(h => h.style.display = 'inline-block');
+    });
+});
+</script>
 
 </body>
 </html>
