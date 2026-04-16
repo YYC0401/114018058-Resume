@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>尤鈺晴 | Coquette Bento 履歷</title>
+<title>尤鈺晴 | Healing 履歷表</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
@@ -117,6 +117,8 @@ body {
     top: 20px;
     left: 20px;
     z-index: 1000;
+    display: flex; /* 新增以支援多個左側按鈕排列 */
+    gap: 15px; /* 新增間距 */
 }
 
 #music-player {
@@ -217,7 +219,7 @@ body {
     align-items: center;
     border-bottom: 2px solid rgba(120, 139, 120, 0.3);
     padding-bottom: 8px;
-    cursor: pointer; /* 改為可點擊展開 */
+    cursor: pointer;
     user-select: none;
 }
 
@@ -250,7 +252,7 @@ h3::before { content: "🎀"; margin-right: 8px; }
 }
 
 .bento-content-wrapper.expanded {
-    max-height: 1000px; /* 給一個足夠大的值讓它展開 */
+    max-height: 1000px;
     opacity: 1;
     margin-top: 15px;
     overflow-y: auto;
@@ -299,28 +301,104 @@ h1 { font-size: 2.8rem; color: var(--title-brown); }
 
 /* PDF 輸出時的隱藏設定 */
 .html2pdf__container { padding: 0 !important; }
+
+/* ================= 新增功能：CSS 樣式 ================= */
+
+/* 1. 職涯規劃樣式 */
+.career-path { display: flex; flex-direction: column; gap: 15px; }
+.career-step { padding-left: 15px; border-left: 3px solid var(--soft-rose); }
+.career-step h4 { font-size: 1rem; color: var(--accent-green); margin-bottom: 3px; }
+.career-step p { font-size: 0.9rem; color: #555; }
+
+/* 2. 漂浮精靈樣式 */
+#sprite-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; cursor: pointer; display: flex; flex-direction: column; align-items: flex-end; }
+#sprite { font-size: 3rem; animation: sprite-float 3s ease-in-out infinite; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+#sprite-bubble { background: white; border: 2px solid var(--soft-rose); padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 200px; font-size: 0.85rem; position: relative; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: var(--title-brown); }
+#sprite-bubble::after { content: ""; position: absolute; bottom: -10px; right: 20px; border-width: 10px 10px 0; border-style: solid; border-color: white transparent; }
+@keyframes sprite-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+/* 3. 音樂播放器按鈕樣式 */
+.music-controls { display: flex; justify-content: center; gap: 15px; margin-top: 5px; margin-bottom: 5px; }
+.control-icon { cursor: pointer; font-size: 1.2rem; color: var(--title-brown); transition: transform 0.2s; }
+.control-icon:hover { transform: scale(1.2); }
+
+/* 4. PDF 預覽彈窗樣式 */
+#pdf-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000; }
+.modal-content { background: white; padding: 30px; border-radius: 20px; width: 80%; max-width: 600px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.preview-box { width: 100%; height: 200px; border: 1px dashed var(--soft-rose); margin: 15px 0; overflow-y: auto; background: var(--shabby-pink); padding: 15px; font-size: 0.9rem; text-align: left; border-radius: 10px; color: var(--title-brown); }
+.modal-btns { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+.confirm-btn { background: var(--accent-pink); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 1rem; transition: background 0.2s; font-weight: bold; }
+.confirm-btn:hover { background: var(--title-brown); }
+.cancel-btn { background: #ccc; color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 1rem; transition: background 0.2s; font-weight: bold; }
+.cancel-btn:hover { background: #999; }
+
+/* 5. 閱讀進度指示器樣式 (新增) */
+#progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: transparent;
+    z-index: 10000;
+    pointer-events: none;
+}
+#progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-green));
+    width: 0%;
+    border-radius: 0 5px 5px 0;
+    transition: width 0.1s;
+}
 </style>
 </head>
 
 <body>
+
+<div id="progress-container">
+    <div id="progress-bar"></div>
+</div>
 
 <div id="welcome-screen">
     <h1>Welcome to My World 🦋</h1>
     <p>Click anywhere to enter</p>
 </div>
 
+<div id="pdf-modal">
+    <div class="modal-content">
+        <h3 style="margin-bottom: 15px;">📄 匯出確認</h3>
+        <p>即將為您生成完整履歷表，請確認預覽內容：</p>
+        <div class="preview-box" id="pdf-preview-content">
+            </div>
+        <div class="modal-btns">
+            <button class="confirm-btn" onclick="executePDFExport()">確認下載</button>
+            <button class="cancel-btn" onclick="closeModal()">取消</button>
+        </div>
+    </div>
+</div>
+
 <div class="left-tools">
     <div class="tool-btn" id="export-btn" title="匯出完整履歷 PDF">📄</div>
+    <div class="tool-btn" id="toggle-all-btn" title="展開/收合全部">↕️</div>
 </div>
 
 <div class="floating-tools">
     <div class="tool-btn" id="music-toggle-btn" title="Music Player">🎵</div>
     <div id="music-player">
         <div style="font-weight: bold; color: var(--title-brown); border-bottom: 1px dashed var(--accent-pink); padding-bottom: 5px;">BGM Playlist</div>
+        <div class="music-controls">
+            <span class="control-icon" onclick="document.getElementById('bg-audio').play()" title="播放">▶️</span>
+            <span class="control-icon" onclick="document.getElementById('bg-audio').pause()" title="暫停">⏸️</span>
+        </div>
         <div class="playlist-item active" data-src="playlist/Aylex - Creamy (freetouse.com).mp3">1. Creamy</div>
         <div class="playlist-item" data-src="playlist/Hazelwood - Reflection (freetouse.com).mp3">2. Reflection</div>
         <div class="playlist-item" data-src="playlist/Lukrembo - Teapot (freetouse.com).mp3">3. Teapot</div>
     </div>
+</div>
+
+<div id="sprite-container">
+    <div id="sprite-bubble">點擊我聽冷知識！</div>
+    <div id="sprite" onclick="sayTrivia()">🧚‍♀️</div>
 </div>
 
 <audio id="bg-audio" loop></audio>
@@ -366,8 +444,8 @@ h1 { font-size: 2.8rem; color: var(--title-brown); }
         <ul class="info-list">
         <li><span class="info-label">學號</span>114018058</li>
         <li><span class="info-label">MBTI</span>INFP</li>
-        <li><span class="info-label">生日</span>2007.04.01</li>
-        <li><span class="info-label">興趣</span>鉤織・舞蹈・寫作</li>
+        <li><span class="info-label">星座</span>牡羊座</li>
+        <li><span class="info-label">興趣</span>鉤織・舞蹈・閱讀</li>
         </ul>
     </div>
 </div>
@@ -415,6 +493,29 @@ h1 { font-size: 2.8rem; color: var(--title-brown); }
 
 <div class="bento-item">
     <div class="item-header" onclick="toggleBento(this)">
+        <h3>職涯規劃</h3>
+        <span class="drag-handle">⋮⋮</span>
+    </div>
+    <div class="bento-content-wrapper fade-content">
+        <div class="career-path">
+            <div class="career-step">
+                <h4>短期目標 (大學期間)</h4>
+                <p>掌握基礎聽語知識，參與見習、實習，積累實務觀察經驗。</p>
+            </div>
+            <div class="career-step">
+                <h4>中期目標 (畢業 1-3 年)</h4>
+                <p>取得語言治療師執照，進入醫療機構或早療中心，專攻小兒構音與溝通發展。</p>
+            </div>
+            <div class="career-step">
+                <h4>長期目標 (職涯遠景)</h4>
+                <p>結合 AI 科技開發輔助溝通系統 (AAC)，建立具溫度的語言復健工作室。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bento-item">
+    <div class="item-header" onclick="toggleBento(this)">
         <h3>專業技能與實力</h3>
         <span class="drag-handle">⋮⋮</span>
     </div>
@@ -442,17 +543,17 @@ h1 { font-size: 2.8rem; color: var(--title-brown); }
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-date">2026.</div>
-                <div class="timeline-title">累積中</div>
+                <div class="timeline-title">累積中...</div>
                 <div class="timeline-desc">---</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-date">2026.</div>
-                <div class="timeline-title">---</div>
+                <div class="timeline-date">-</div>
+                <div class="timeline-title">...</div>
                 <div class="timeline-desc">---</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-date">2026.</div>
-                <div class="timeline-title">---</div>
+                <div class="timeline-date">-</div>
+                <div class="timeline-title">...</div>
                 <div class="timeline-desc">---</div>
             </div>
         </div>
@@ -564,10 +665,56 @@ function toggleBento(headerElement) {
     }
 }
 
-// ================= 5. PDF 匯出功能 =================
-const exportBtn = document.getElementById('export-btn');
+// ================= 新增功能：聽語小精靈邏輯 =================
+const trivias = [
+    "你知道嗎？舌頭是人體最強韌的肌肉之一喔！👅",
+    "吞嚥動作其實需要 30 多塊肌肉的協同合作，超精密的！",
+    "人類的耳朵能分辨超過 40 萬種不同的聲音！👂",
+    "語言治療不只教說話，還包括吞嚥跟社交溝通的復健喔！",
+    "大腦中的布若卡氏區 (Broca's area) 負責控制我們的言語產生！🧠"
+];
 
+function sayTrivia() {
+    const bubble = document.getElementById('sprite-bubble');
+    const randomIdx = Math.floor(Math.random() * trivias.length);
+    bubble.innerText = trivias[randomIdx];
+    bubble.style.display = 'block';
+    
+    // 5秒後自動隱藏對話框
+    setTimeout(() => {
+        bubble.style.display = 'none';
+    }, 5000);
+}
+
+// ================= 5. PDF 匯出功能 (已整合預覽彈窗) =================
+const exportBtn = document.getElementById('export-btn');
+const pdfModal = document.getElementById('pdf-modal');
+const previewContent = document.getElementById('pdf-preview-content');
+
+// 點擊匯出按鈕：顯示預覽彈窗
 exportBtn.addEventListener('click', () => {
+    // 獲取目前所有的區塊標題來產生預覽文字
+    const name = document.querySelector('h1').innerText;
+    const allHeaders = Array.from(document.querySelectorAll('h3')).map(h => h.innerText).join('、');
+    
+    previewContent.innerHTML = `
+        <strong>姓名：</strong> ${name}<br><br>
+        <strong>即將匯出的內容區塊：</strong><br>${allHeaders}<br><br>
+        <span style="color:var(--accent-green);">* 系統將自動展開所有隱藏內容，並隱藏網頁操作按鈕，為您生成最完美排版的 PDF！</span>
+    `;
+    
+    pdfModal.style.display = 'flex';
+});
+
+// 關閉彈窗
+function closeModal() {
+    pdfModal.style.display = 'none';
+}
+
+// 確認下載：執行原有的 PDF 生成邏輯
+function executePDFExport() {
+    closeModal();
+    
     // 1. 強制展開所有隱藏的 Bento Items 確保內容被印出
     const allWrappers = document.querySelectorAll('.bento-content-wrapper');
     allWrappers.forEach(wrapper => {
@@ -583,9 +730,10 @@ exportBtn.addEventListener('click', () => {
         bars.forEach(bar => bar.style.width = bar.getAttribute('data-width'));
     });
 
-    // 2. 隱藏不必要的按鈕 (避免印到 PDF 裡)
+    // 2. 隱藏不必要的按鈕與精靈 (避免印到 PDF 裡)
     document.querySelector('.floating-tools').style.display = 'none';
     document.querySelector('.left-tools').style.display = 'none';
+    document.getElementById('sprite-container').style.display = 'none';
     const dragHandles = document.querySelectorAll('.drag-handle');
     dragHandles.forEach(h => h.style.display = 'none');
 
@@ -604,9 +752,53 @@ exportBtn.addEventListener('click', () => {
         // 5. 匯出完成後，恢復介面元素
         document.querySelector('.floating-tools').style.display = 'flex';
         document.querySelector('.left-tools').style.display = 'block';
+        document.getElementById('sprite-container').style.display = 'flex';
         dragHandles.forEach(h => h.style.display = 'inline-block');
     });
+}
+
+// ================= 6. 新增功能：展開/收合全部 與 閱讀進度條 =================
+
+// 展開/收合全部邏輯
+const toggleAllBtn = document.getElementById('toggle-all-btn');
+let isAllExpanded = false;
+
+toggleAllBtn.addEventListener('click', () => {
+    isAllExpanded = !isAllExpanded;
+    // 選取除了 Header 以外所有的 bento-content-wrapper
+    const allWrappers = document.querySelectorAll('.bento-item:not(.header-item) .bento-content-wrapper');
+    
+    allWrappers.forEach(wrapper => {
+        if (isAllExpanded) {
+            wrapper.classList.add('expanded');
+            // 直接顯示打字機文字，避免多個區塊同時跑動畫重疊
+            const typingEl = wrapper.querySelector('.typing-text');
+            if (typingEl) {
+                typingEl.innerHTML = typingEl.getAttribute('data-text'); 
+            }
+            // 填滿進度條
+            const bars = wrapper.querySelectorAll('.bar-fill');
+            bars.forEach(bar => bar.style.width = bar.getAttribute('data-width'));
+        } else {
+            wrapper.classList.remove('expanded');
+            // 清空打字機文字與進度條，為下次點擊準備
+            const typingEl = wrapper.querySelector('.typing-text');
+            if (typingEl) typingEl.innerHTML = '';
+            const bars = wrapper.querySelectorAll('.bar-fill');
+            bars.forEach(bar => bar.style.width = '0');
+        }
+    });
 });
+
+// 閱讀進度條邏輯
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    // 避免 height 為 0 導致錯誤
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
+});
+
 </script>
 
 </body>
